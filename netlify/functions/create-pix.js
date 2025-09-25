@@ -23,6 +23,7 @@ module.exports.handler = async (event) => {
     });
 
     const data = await response.json();
+    console.log("Resposta do Mercado Pago:", data);
 
     return {
       statusCode: response.status,
