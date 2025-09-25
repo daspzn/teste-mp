@@ -473,55 +473,6 @@ function gerarOutroValor() {
         <span> 2025 - Todos direitos reservados</span>
     </div>
 </footer>
-<div class="modal modal-doar">
-    <div class="fora-modal"></div>
-    <div class="content-modal">
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <title>Doação via PIX</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    .btn {
-      background: #24ca68;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      margin: 10px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #1da955;
-    }
-    #pixArea {
-      margin-top: 30px;
-      display: none;
-    }
-    #pixCode {
-      width: 90%;
-      max-width: 400px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Escolha o valor da doação</h1>
-
-<section id="doacao">
-  <div class="container" style="text-align:center; margin:40px auto;">
-    <h2>Escolha um valor para ajudar</h2>
-
-    <!-- Botões -->
-    <button class="btn-ajudar" onclick="gerarPix(30)">Doar R$ 30</button>
-    <button class="btn-ajudar" onclick="gerarPix(40)">Doar R$ 40</button>
-    <button class="btn-ajudar" onclick="gerarPix(50)">Doar R$ 50</button>
-
 <!-- Modal PIX -->
 <div id="pixModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
   <div style="background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; position:relative;">
@@ -570,7 +521,6 @@ async function gerarPix(valor) {
   const data = await resp.json();
   console.log("Resposta PIX:", data);
 
-  // Mercado Pago retorna dentro de point_of_interaction.transaction_data
   const qrCode = data.point_of_interaction?.transaction_data?.qr_code;
   const qrBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
 
@@ -581,9 +531,8 @@ async function gerarPix(valor) {
     console.log("Erro: Estrutura inesperada da resposta", data);
   }
 }
+</script>
 
-
-  </script>
 </body>
 </html>
 </div></div></body></html>
