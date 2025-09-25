@@ -492,42 +492,6 @@ Rosilei Clara</h3>
   </div>
 </section>
 
-<script>
-async function gerarPix(valor) {
-  try {
-    const resp = await fetch("/.netlify/functions/create-pix", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        transaction_amount: valor,
-        description: "Doação via PIX",
-        payer: { email: "cliente@teste.com" }
-      })
-    });
-
-    const data = await resp.json();
-    console.log("Resposta Mercado Pago:", data);
-
-    // Mercado Pago devolve no campo transaction_data
-    const qrBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
-    const qrCode = data.point_of_interaction?.transaction_data?.qr_code;
-
-    if (qrBase64 || qrCode) {
-      document.getElementById("pixArea").style.display = "block";
-    }
-    if (qrBase64) {
-      document.getElementById("pixQr").src = "data:image/png;base64," + qrBase64;
-    }
-    if (qrCode) {
-      document.getElementById("pixCode").value = qrCode;
-    }
-  } catch (err) {
-    alert("Erro ao gerar PIX. Veja o console.");
-    console.error(err);
-  }
-}
-</script>
-
 </script>
 <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
 
