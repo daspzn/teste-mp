@@ -11,12 +11,12 @@ export async function handler(event) {
         "Authorization": `Bearer ${process.env.MP_ACCESS_TOKEN}`
       },
       body: JSON.stringify({
-        transaction_amount: body.transaction_amount,
-        description: body.description,
-        payment_method_id: "pix",
-        payer: {
-          email: body.payer.email
-        }
+{
+  "transaction_amount": 30,
+  "description": "Doação via PIX",
+  "payment_method_id": "pix",
+  "payer": { "email": "cliente@teste.com" }
+}
       })
     });
 
