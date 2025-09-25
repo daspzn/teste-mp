@@ -564,26 +564,26 @@ async function gerarPix(valor) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      name: "Cliente Exemplo",
-      email: "cliente@exemplo.com",
-      cpf: "01234567890",
-      phone: "5516999999999",
-      items: [
-        { title: "Doação", unitPrice: valor, quantity: 1, tangible: false }
-      ],
-      amount: valor
+      transaction_amount: valor,
+      description: "Doação via PIX",
+      payer: { email: "cliente@teste.com" }
     })
   });
 
   const data = await resp.json();
   console.log("Resposta PIX:", data);
 
-  if (data.pixQrCode) {
+  const qrBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
+  const qrCode = data.point_of_interaction?.transaction_data?.qr_code;
+
+  if (qrBase64 || qrCode) {
     document.getElementById("pixArea").style.display = "block";
-    document.getElementById("pixQr").src = data.pixQrCode;
   }
-  if (data.pixCode) {
-    document.getElementById("pixCode").value = data.pixCode;
+  if (qrBase64) {
+    document.getElementById("pixQr").src = "data:image/png;base64," + qrBase64;
+  }
+  if (qrCode) {
+    document.getElementById("pixCode").value = qrCode;
   }
 }
   </script>
