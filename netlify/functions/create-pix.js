@@ -7,6 +7,7 @@ export async function handler(event) {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${process.env.MP_ACCESS_TOKEN}`
+        "X-Idempotency-Key": Date.now().toString() // gera uma chave única a cada requisição
       },
       body: JSON.stringify({
         transaction_amount: body.transaction_amount,
