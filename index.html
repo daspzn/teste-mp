@@ -384,6 +384,16 @@ Rosilei Clara</h3>
     <button class="btn-ajudar" onclick="gerarOutroValor()">Doar</button>
   </div>
 </div>
+<script>
+function gerarOutroValor() {
+  const valor = Number(document.getElementById("valorOutro").value);
+  if (!valor || valor < 1) {
+    alert("Digite um valor válido!");
+    return;
+  }
+  gerarPix(valor);
+}
+</script>
 
 </section>
 <footer>
