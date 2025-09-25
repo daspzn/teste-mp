@@ -1,4 +1,7 @@
-export async function handler(event) {
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); 
+// ↑ Se der erro de node-fetch, pode remover isso e usar o fetch nativo do runtime
+
+module.exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
@@ -6,8 +9,8 @@ export async function handler(event) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.MP_ACCESS_TOKEN}`
-        "X-Idempotency-Key": Date.now().toString() // gera uma chave única a cada requisição
+        "Authorization": `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+        "X-Idempotency-Key": Date.now().toString()
       },
       body: JSON.stringify({
         transaction_amount: body.transaction_amount,
@@ -32,4 +35,4 @@ export async function handler(event) {
       body: JSON.stringify({ error: "Erro interno ao gerar PIX" })
     };
   }
-}
+};
