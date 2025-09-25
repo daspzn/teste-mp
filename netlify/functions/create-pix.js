@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+// não precisa importar fetch, já vem no runtime
 
 export async function handler(event) {
   try {
