@@ -528,7 +528,7 @@ async function gerarPix(valor) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      transaction_amount: 40,
+      transaction_amount: valor, // número (30, 40, 50)
       description: "Doação via PIX",
       payer: { email: "cliente@teste.com" }
     })
@@ -550,6 +550,7 @@ async function gerarPix(valor) {
     document.getElementById("pixCode").value = qrCode;
   }
 }
+
   </script>
 </body>
 </html>
