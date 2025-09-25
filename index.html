@@ -354,7 +354,37 @@ Rosilei Clara</h3>
     
 </section>
 <section id="fixed-mobile" class="d-block d-lg-none d-xl-none">
-    <button type="button" class="btn-ajudar">Quero Ajudar</button>
+<!-- Botão Quero Ajudar -->
+<button class="btn-ajudar" onclick="document.getElementById('valoresDoacao').style.display='block'">
+  Quero Ajudar
+</button>
+
+<!-- Grid de Valores -->
+<div id="valoresDoacao" style="display:none; margin-top:20px; text-align:center;">
+  <h3>Qual valor deseja doar?</h3>
+  
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; max-width:500px; margin:0 auto;">
+    <button class="btn-ajudar" onclick="gerarPix(30)">R$ 30,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(40)">R$ 40,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(50)">R$ 50,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(100)">R$ 100,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(150)">R$ 150,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(200)">R$ 200,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(250)">R$ 250,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(300)">R$ 300,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(400)">R$ 400,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(500)">R$ 500,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(750)">R$ 750,00</button>
+    <button class="btn-ajudar" onclick="gerarPix(1000)">R$ 1000,00</button>
+  </div>
+
+  <!-- Outro valor -->
+  <div style="margin-top:20px;">
+    <input id="valorOutro" type="number" placeholder="Digite outro valor" style="padding:8px; border-radius:6px; border:1px solid #ccc; width:150px; text-align:center;">
+    <button class="btn-ajudar" onclick="gerarOutroValor()">Doar</button>
+  </div>
+</div>
+
 </section>
 <footer>
     <div class="aviso">
