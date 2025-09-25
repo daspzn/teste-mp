@@ -1,6 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); 
-// ↑ Se der erro de node-fetch, pode remover isso e usar o fetch nativo do runtime
-
 module.exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
@@ -13,7 +10,7 @@ module.exports.handler = async (event) => {
         "X-Idempotency-Key": Date.now().toString()
       },
       body: JSON.stringify({
-        transaction_amount: body.transaction_amount,
+        transaction_amount: Number(body.transaction_amount), // garante número
         description: body.description,
         payment_method_id: "pix",
         payer: {
@@ -23,7 +20,7 @@ module.exports.handler = async (event) => {
     });
 
     const data = await response.json();
-    console.log("Resposta do Mercado Pago:", data);
+    console.log("Resposta Mercado Pago:", data); // aparece no log da função no Netlify
 
     return {
       statusCode: response.status,
@@ -33,7 +30,9 @@ module.exports.handler = async (event) => {
     console.error("Erro create-pix:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Erro interno ao gerar PIX" })
+      body: JSON.stringify({
+        error: err.message || "Erro interno ao gerar PIX"
+      })
     };
   }
 };
