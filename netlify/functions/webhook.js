@@ -1,20 +1,35 @@
-export async function handler(event) {
+module.exports.handler = async (event) => {
   try {
-    const payload = JSON.parse(event.body);
-    console.log("Webhook recebido da NivusPay:", payload);
+    // Mercado Pago envia em formato JSON
+    const data = JSON.parse(event.body);
+    console.log("Webhook recebido:", data);
 
-    // Aqui você atualiza o status do pagamento no seu banco de dados
-    // payload.status, payload.paymentId etc.
+    // IMPORTANTE: validar a assinatura do Mercado Pago se necessário
 
-    return {
-      statusCode: 200,
-      body: "OK"
-    };
+    // Exemplo: evento de pagamento
+    if (data.type === "payment" || data.action === "payment.created" || data.action === "payment.updated") {
+      const paymentId = data.data.id;
+
+      // Buscar detalhes do pagamento no Mercado Pago
+      const resp = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+        headers: {
+          "Authorization": `Bearer ${process.env.MP_ACCESS_TOKEN}`
+        }
+      });
+
+      const payment = await resp.json();
+      console.log("Detalhes do pagamento:", payment);
+
+      // Aqui você trata os status
+      if (payment.status === "approved") {
+        // 💰 Dinheiro caiu
+        // Ex: salvar no banco de dados, disparar e-mail, notificar no Telegram etc.
+      }
+    }
+
+    return { statusCode: 200, body: "ok" };
   } catch (err) {
-    console.error("Erro no webhook:", err);
-    return {
-      statusCode: 500,
-      body: "Erro interno"
-    };
+    console.error("Erro webhook:", err);
+    return { statusCode: 500, body: "erro" };
   }
-}
+};
