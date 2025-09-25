@@ -570,15 +570,18 @@ async function gerarPix(valor) {
   const data = await resp.json();
   console.log("Resposta PIX:", data);
 
-  const qrBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
+  // Mercado Pago retorna dentro de point_of_interaction.transaction_data
   const qrCode = data.point_of_interaction?.transaction_data?.qr_code;
+  const qrBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
 
-  if (qrBase64 || qrCode) {
+  if (qrCode || qrBase64) {
     abrirPixModal(qrBase64, qrCode);
   } else {
-    alert("Erro ao gerar PIX.");
+    alert("Não foi possível gerar o QR Code PIX.");
+    console.log("Erro: Estrutura inesperada da resposta", data);
   }
 }
+
 
   </script>
 </body>
