@@ -482,53 +482,46 @@ Rosilei Clara</h3>
     <button class="btn-ajudar" onclick="gerarPix(40)">Doar R$ 40</button>
     <button class="btn-ajudar" onclick="gerarPix(50)">Doar R$ 50</button>
 
-    <!-- Área PIX -->
-    <div id="pixArea" style="display:none; margin-top:20px;">
-      <p><strong>Código PIX:</strong></p>
-      <textarea id="pixCode" rows="3" cols="60" readonly></textarea>
-      <p>Ou escaneie o QR Code:</p>
-      <img id="pixQr" alt="QR Code PIX" style="max-width:250px;" />
-    </div>
+<!-- Modal PIX -->
+<div id="pixModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; position:relative;">
+    <h2>Finalize sua doação</h2>
+    <p>Escaneie o QR Code abaixo ou copie o código PIX:</p>
+    <img id="pixQr" alt="QR Code PIX" style="max-width:250px; margin:10px auto;" />
+    <textarea id="pixCode" rows="3" style="width:100%; margin-top:10px;" readonly></textarea>
+    <button onclick="copiarPix()" style="margin:10px; background:#24ca68; color:white; border:none; padding:10px; border-radius:6px; cursor:pointer;">Copiar Código PIX</button>
+    <button onclick="fecharPixModal()" style="margin:10px; background:#ccc; border:none; padding:10px; border-radius:6px; cursor:pointer;">Fechar</button>
   </div>
-</section>
-
-</script>
-<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
-
-
-
-
-<script src="js/jquery.min.js"></script>
-<script src="js/swiper-bundle.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/scripts.js"></script>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <title>Pagar com PIX</title>
-</head>
-<body>
-  <h1>Pagamento via PIX</h1>
-  <button id="btnPix">Gerar PIX</button>
-
-<div id="pixArea" style="display:none; margin-top:20px;">
-  <p><strong>Código PIX:</strong></p>
-  <textarea id="pixCode" rows="3" cols="60"></textarea>
-  <p>Ou escaneie o QR Code:</p>
-  <img id="pixQr" alt="QR Code PIX" />
 </div>
 
+<script>
+function abrirPixModal(qrBase64, qrCode) {
+  if (qrBase64) {
+    document.getElementById("pixQr").src = "data:image/png;base64," + qrBase64;
+  }
+  if (qrCode) {
+    document.getElementById("pixCode").value = qrCode;
+  }
+  document.getElementById("pixModal").style.display = "flex";
+}
 
-  <script>
+function fecharPixModal() {
+  document.getElementById("pixModal").style.display = "none";
+}
+
+function copiarPix() {
+  const codigo = document.getElementById("pixCode");
+  codigo.select();
+  document.execCommand("copy");
+  alert("Código PIX copiado!");
+}
 
 async function gerarPix(valor) {
   const resp = await fetch("/.netlify/functions/create-pix", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      transaction_amount: valor, // número (30, 40, 50)
+      transaction_amount: valor,
       description: "Doação via PIX",
       payer: { email: "cliente@teste.com" }
     })
@@ -541,13 +534,9 @@ async function gerarPix(valor) {
   const qrCode = data.point_of_interaction?.transaction_data?.qr_code;
 
   if (qrBase64 || qrCode) {
-    document.getElementById("pixArea").style.display = "block";
-  }
-  if (qrBase64) {
-    document.getElementById("pixQr").src = "data:image/png;base64," + qrBase64;
-  }
-  if (qrCode) {
-    document.getElementById("pixCode").value = qrCode;
+    abrirPixModal(qrBase64, qrCode);
+  } else {
+    alert("Erro ao gerar PIX.");
   }
 }
 
