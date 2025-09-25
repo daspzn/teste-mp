@@ -528,7 +528,7 @@ async function gerarPix(valor) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      transaction_amount: valor,
+      transaction_amount: 40,
       description: "Doação via PIX",
       payer: { email: "cliente@teste.com" }
     })
